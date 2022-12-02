@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::{BufReader, BufRead};
 
 fn main() {
     let list = fs::read_to_string("src/input.txt").expect("File read failed!");
