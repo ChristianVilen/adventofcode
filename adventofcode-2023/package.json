@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "day01": "ts-node src/day01/index.ts",
-    "day02": "ts-node src/day02/index.ts"
+    "day01": "node --loader ts-node/esm src/day01/index.ts",
+    "day02": "node --loader ts-node/esm src/day02/index.ts"
   },
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
