@@ -11,8 +11,9 @@ const findDuplicates = (({comp1, comp2}: {
 	comp1: string
 	comp2: string
 }) => [...comp1].filter(it => [...comp2].includes(it)))
-const res1 = compartments.map(findDuplicates).reduce((curr, acc) => curr + (priorities.indexOf(acc[0]) + 1), 0)
 
+const res1 = compartments.map(findDuplicates).reduce((curr, acc) => curr + (priorities.indexOf(acc[0]) + 1), 0)
+console.log(compartments.map(findDuplicates))
 console.log("PART 1!", res1)
 
 // PART 2!
