@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "day01": "node --loader ts-node/esm src/day01/index.ts",
-    "day02": "node --loader ts-node/esm src/day02/index.ts"
+    "day01": "bun run --watch src/day01/index.ts",
+    "day02": "bun run --watch src/day02/index.ts"
   },
   "author": "",
   "license": "ISC",

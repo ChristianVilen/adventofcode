@@ -1,55 +1,47 @@
-import fs from 'fs/promises';
+import fs from 'fs/promises'
+import { pipe } from 'fp-ts/function'
 
-const data = await fs.readFile("src/day01/input.txt", 'utf8').then(data => data.split('\n'));
+const readFile = (path: string): Promise<string> => fs.readFile(path, 'utf8')
 
-function sumLines(arr: string[]) {
-    return arr.map(line => {
-      const firstNumber = line.at(0)
+const splitLines = (data: string): string[] => data.split('\n')
+const removeCharacters = (data: string[]): string[] => data.map((line) => line.replace(/\D/g, ''))
 
-      if (line.length === 1 && firstNumber) {
-        return `${firstNumber}${firstNumber}`
-      }
+const sumLines = (arr: string[]) =>
+  arr.map((line) => {
+    const firstNumber = line.at(0)
 
-      const secondNumber = line.at(-1)
+    if (line.length === 1 && firstNumber) {
+      return `${firstNumber}${firstNumber}`
+    }
 
-      if (!firstNumber || !secondNumber) {
-        throw Error('no numbers')
-      }
+    const secondNumber = line.at(-1)
 
-      return `${firstNumber + secondNumber}`
-    })
+    if (!firstNumber || !secondNumber) {
+      throw Error('no numbers')
+    }
+
+    return `${firstNumber + secondNumber}`
+  })
+
+async function part1() {
+  const data = pipe(await readFile('src/day01/input.txt'), splitLines, removeCharacters)
+
+  const allSummed = sumLines(data).reduce((a, b) => Number(a) + Number(b), 0)
+
+  console.log('part1:', allSummed)
 }
 
-// Part 1
-const noCharacters = data.map((line) => line.replace(/\D/g, ""));
-const allSummed = sumLines(noCharacters).reduce((a, b) => Number(a) + Number(b), 0)
-
-console.log("part1:", allSummed)
-
+await part1()
 // part 2
-const foundNumbers = data.map((line) => {
-  const digits = [
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ]
-    .reduce(
-      (acc, word, index) => acc.replaceAll(word, word + (index + 1) + word),
-      line
-    )
-    .split("")
+const foundNumbers = pipe(await readFile('./src/day01/input.txt'), splitLines).map((line) =>
+  ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    .reduce((acc, word, index) => acc.replaceAll(word, word + (index + 1) + word), line)
+    .split('')
     .map(Number)
-    .filter(Boolean);
-
-  return digits.join("")
-});
+    .filter(Boolean)
+    .join('')
+)
 
 const allSummed2 = sumLines(foundNumbers).reduce((a, b) => Number(a) + Number(b), 0)
 
-console.log("part2:", allSummed2)
+console.log('part2:', allSummed2)
