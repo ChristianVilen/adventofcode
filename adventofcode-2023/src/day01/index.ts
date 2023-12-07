@@ -1,9 +1,6 @@
-import fs from 'fs/promises'
 import { pipe } from 'fp-ts/function'
+import fileReader from '../fileReader'
 
-const readFile = (path: string): Promise<string> => fs.readFile(path, 'utf8')
-
-const splitLines = (data: string): string[] => data.split('\n')
 const removeCharacters = (data: string[]): string[] => data.map((line) => line.replace(/\D/g, ''))
 
 const sumLines = (arr: string[]) =>
@@ -23,17 +20,14 @@ const sumLines = (arr: string[]) =>
     return `${firstNumber + secondNumber}`
   })
 
-async function part1() {
-  const data = pipe(await readFile('src/day01/input.txt'), splitLines, removeCharacters)
+const data = await fileReader('src/day01/input.txt')
 
-  const allSummed = sumLines(data).reduce((a, b) => Number(a) + Number(b), 0)
+const allSummed = sumLines(pipe(data, removeCharacters)).reduce((a, b) => Number(a) + Number(b), 0)
 
-  console.log('part1:', allSummed)
-}
+console.log('part1:', allSummed)
 
-await part1()
 // part 2
-const foundNumbers = pipe(await readFile('./src/day01/input.txt'), splitLines).map((line) =>
+const foundNumbers = data.map((line) =>
   ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     .reduce((acc, word, index) => acc.replaceAll(word, word + (index + 1) + word), line)
     .split('')
